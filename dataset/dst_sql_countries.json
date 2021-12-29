@@ -81,8 +81,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "adf",
-			"table": "Configuration"
+			"schema": "staging",
+			"table": "countriesref_untyped"
 		}
 	}
 }
