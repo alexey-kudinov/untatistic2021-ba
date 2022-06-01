@@ -1,0 +1,21 @@
+{
+	"name": "unstatistic-runtime-aak",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "North Europe",
+				"dataFlowProperties": {
+					"computeType": "General",
+					"coreCount": 8,
+					"timeToLive": 5,
+					"cleanup": false
+				}
+			}
+		},
+		"managedVirtualNetwork": {
+			"type": "ManagedVirtualNetworkReference",
+			"referenceName": "default"
+		}
+	}
+}
