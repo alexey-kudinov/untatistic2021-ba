@@ -1,0 +1,16 @@
+{
+	"name": "unstatistic_test",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=10.0.5.4;initial catalog=Test;user id=alek",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlM2U0ODQ0MC05YWRkLTRiY2UtYmE4Mi1iMTQwZGE2YzY2YTkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "unstatistic-selfhosted-aak",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
