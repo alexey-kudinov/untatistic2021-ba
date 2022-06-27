@@ -1,0 +1,18 @@
+{
+	"name": "unstatistic_dwh",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=unstatisticsqls-aak-dev.database.windows.net;Initial Catalog=unstatistic.dwh",
+			"credential": {
+				"referenceName": "unstatistic_managed_cred",
+				"type": "CredentialReference"
+			}
+		},
+		"connectVia": {
+			"referenceName": "unstatistic-runtime-aak",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
