@@ -6,7 +6,7 @@
 		"typeProperties": {
 			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=unstatisticsqls-aak-dev.database.windows.net;Initial Catalog=unstatistic.dwh",
 			"credential": {
-				"referenceName": "unstatistic_managed_cred",
+				"referenceName": "unstatistic_managed_cred2",
 				"type": "CredentialReference"
 			}
 		},
