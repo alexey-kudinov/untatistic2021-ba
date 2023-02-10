@@ -1,7 +1,0 @@
-{
-	"name": "unstatistic-db-private-endpoint",
-	"properties": {
-		"privateLinkResourceId": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Sql/servers/unstatisticsqls-aak-dev",
-		"groupId": "sqlServer"
-	}
-}
