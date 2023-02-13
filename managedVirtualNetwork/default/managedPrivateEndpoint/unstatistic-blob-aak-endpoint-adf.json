@@ -1,0 +1,7 @@
+{
+	"name": "unstatistic-blob-aak-endpoint-adf",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Storage/storageAccounts/unstatistic",
+		"groupId": "blob"
+	}
+}
