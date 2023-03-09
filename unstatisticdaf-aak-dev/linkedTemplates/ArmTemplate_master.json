@@ -1,0 +1,147 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "unstatisticdaf-aak-dev"
+		},
+		"Unstatistic_PrivateEndpoint_DB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Unstatistic_PrivateEndpoint_DB'"
+		},
+		"msbiazurelinkedservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'msbiazurelinkedservice'"
+		},
+		"msbiazurelinkedservicekeyvault_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'msbiazurelinkedservicekeyvault'"
+		},
+		"unstatistic_dwh_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatistic_dwh'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=unstatisticsqls-aak-dev.database.windows.net;Initial Catalog=unstatistic.dwh"
+		},
+		"unstatistic_test_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatistic_test'"
+		},
+		"unstatisticsqlsbadevlinkedservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatisticsqlsbadevlinkedservice'"
+		},
+		"unstatisticstac_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatisticstac'"
+		},
+		"unstatistickyvtba_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://unstatistickyvtbadev.vault.azure.net/"
+		},
+		"unstatistic-aak-endpoint-adf_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Sql/servers/unstatisticsqls-aak-dev"
+		},
+		"unstatistic-aak-endpoint-adf_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sqlServer"
+		},
+		"unstatistic-blob-aak-endpoint-adf_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Storage/storageAccounts/unstatistic"
+		},
+		"unstatistic-blob-aak-endpoint-adf_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "unstatisticdaf-aak-dev_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"msbiazurelinkedservice_connectionString": {
+						"value": "[parameters('msbiazurelinkedservice_connectionString')]"
+					},
+					"unstatistic_test_connectionString": {
+						"value": "[parameters('unstatistic_test_connectionString')]"
+					},
+					"Unstatistic_PrivateEndpoint_DB_connectionString": {
+						"value": "[parameters('Unstatistic_PrivateEndpoint_DB_connectionString')]"
+					},
+					"msbiazurelinkedservicekeyvault_connectionString": {
+						"value": "[parameters('msbiazurelinkedservicekeyvault_connectionString')]"
+					},
+					"unstatistic_dwh_connectionString": {
+						"value": "[parameters('unstatistic_dwh_connectionString')]"
+					},
+					"unstatisticsqlsbadevlinkedservice_connectionString": {
+						"value": "[parameters('unstatisticsqlsbadevlinkedservice_connectionString')]"
+					},
+					"unstatisticstac_connectionString": {
+						"value": "[parameters('unstatisticstac_connectionString')]"
+					},
+					"unstatistickyvtba_properties_typeProperties_baseUrl": {
+						"value": "[parameters('unstatistickyvtba_properties_typeProperties_baseUrl')]"
+					},
+					"unstatistic-aak-endpoint-adf_properties_privateLinkResourceId": {
+						"value": "[parameters('unstatistic-aak-endpoint-adf_properties_privateLinkResourceId')]"
+					},
+					"unstatistic-aak-endpoint-adf_properties_groupId": {
+						"value": "[parameters('unstatistic-aak-endpoint-adf_properties_groupId')]"
+					},
+					"unstatistic-blob-aak-endpoint-adf_properties_privateLinkResourceId": {
+						"value": "[parameters('unstatistic-blob-aak-endpoint-adf_properties_privateLinkResourceId')]"
+					},
+					"unstatistic-blob-aak-endpoint-adf_properties_groupId": {
+						"value": "[parameters('unstatistic-blob-aak-endpoint-adf_properties_groupId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "unstatisticdaf-aak-dev_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'unstatisticdaf-aak-dev_ArmTemplate_0')]"
+			]
+		}
+	]
+}

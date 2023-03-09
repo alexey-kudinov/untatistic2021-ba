@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "unstatisticdaf-aak-dev"
+		},
+		"Unstatistic_PrivateEndpoint_DB_connectionString": {
+			"value": ""
+		},
+		"msbiazurelinkedservice_connectionString": {
+			"value": ""
+		},
+		"msbiazurelinkedservicekeyvault_connectionString": {
+			"value": ""
+		},
+		"unstatistic_dwh_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=unstatisticsqls-aak-dev.database.windows.net;Initial Catalog=unstatistic.dwh"
+		},
+		"unstatistic_test_connectionString": {
+			"value": ""
+		},
+		"unstatisticsqlsbadevlinkedservice_connectionString": {
+			"value": ""
+		},
+		"unstatisticstac_connectionString": {
+			"value": ""
+		},
+		"unstatistickyvtba_properties_typeProperties_baseUrl": {
+			"value": "https://unstatistickyvtbadev.vault.azure.net/"
+		},
+		"unstatistic-aak-endpoint-adf_properties_privateLinkResourceId": {
+			"value": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Sql/servers/unstatisticsqls-aak-dev"
+		},
+		"unstatistic-aak-endpoint-adf_properties_groupId": {
+			"value": "sqlServer"
+		},
+		"unstatistic-blob-aak-endpoint-adf_properties_privateLinkResourceId": {
+			"value": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Storage/storageAccounts/unstatistic"
+		},
+		"unstatistic-blob-aak-endpoint-adf_properties_groupId": {
+			"value": "blob"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

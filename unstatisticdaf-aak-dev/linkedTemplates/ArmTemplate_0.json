@@ -1,0 +1,441 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "unstatisticdaf-aak-dev"
+		},
+		"msbiazurelinkedservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'msbiazurelinkedservice'"
+		},
+		"unstatistic_test_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatistic_test'"
+		},
+		"Unstatistic_PrivateEndpoint_DB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Unstatistic_PrivateEndpoint_DB'"
+		},
+		"msbiazurelinkedservicekeyvault_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'msbiazurelinkedservicekeyvault'"
+		},
+		"unstatistic_dwh_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatistic_dwh'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=unstatisticsqls-aak-dev.database.windows.net;Initial Catalog=unstatistic.dwh"
+		},
+		"unstatisticsqlsbadevlinkedservice_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatisticsqlsbadevlinkedservice'"
+		},
+		"unstatisticstac_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'unstatisticstac'"
+		},
+		"unstatistickyvtba_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://unstatistickyvtbadev.vault.azure.net/"
+		},
+		"unstatistic-aak-endpoint-adf_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Sql/servers/unstatisticsqls-aak-dev"
+		},
+		"unstatistic-aak-endpoint-adf_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sqlServer"
+		},
+		"unstatistic-blob-aak-endpoint-adf_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.Storage/storageAccounts/unstatistic"
+		},
+		"unstatistic-blob-aak-endpoint-adf_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatistickyvtba')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('unstatistickyvtba_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatistic-selfhosted-aak')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatistic_managed_cred')]",
+			"type": "Microsoft.DataFactory/factories/credentials",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.ManagedIdentity/userAssignedIdentities/unstatistic_managed_id"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatistic_managed_cred2')]",
+			"type": "Microsoft.DataFactory/factories/credentials",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/689d40c6-0a41-490d-8139-9872887c213f/resourceGroups/unstatistic-rg-aak-dev/providers/Microsoft.ManagedIdentity/userAssignedIdentities/unstatistic_managed_id"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/No-VNet')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "North Europe",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/msbiazurelinkedservice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('msbiazurelinkedservice_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "No-VNet",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/No-VNet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatistic_test')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('unstatistic_test_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "unstatistic-selfhosted-aak",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/unstatistic-selfhosted-aak')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatistic-runtime-aak')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "North Europe",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 5,
+							"cleanup": false
+						},
+						"pipelineExternalComputeScaleProperties": {
+							"timeToLive": 60
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/unstatistic-aak-endpoint-adf')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('unstatistic-aak-endpoint-adf_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('unstatistic-aak-endpoint-adf_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/unstatistic-blob-aak-endpoint-adf')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('unstatistic-blob-aak-endpoint-adf_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('unstatistic-blob-aak-endpoint-adf_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_41i')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "msbiazurelinkedservice",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_table": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "task",
+					"table": {
+						"value": "@dataset().cw_table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/msbiazurelinkedservice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Unstatistic_PrivateEndpoint_DB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('Unstatistic_PrivateEndpoint_DB_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "unstatistic-runtime-aak",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/unstatistic-runtime-aak')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/msbiazurelinkedservicekeyvault')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('msbiazurelinkedservicekeyvault_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "unstatistic-runtime-aak",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/unstatistic-runtime-aak')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatistic_dwh')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('unstatistic_dwh_connectionString')]",
+					"credential": {
+						"referenceName": "unstatistic_managed_cred",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "unstatistic-runtime-aak",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/unstatistic-runtime-aak')]",
+				"[concat(variables('factoryId'), '/credentials/unstatistic_managed_cred')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatisticsqlsbadevlinkedservice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('unstatisticsqlsbadevlinkedservice_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "unstatistic-runtime-aak",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/unstatistic-runtime-aak')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/unstatisticstac')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('unstatisticstac_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "unstatistic-runtime-aak",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/unstatistic-runtime-aak')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_41i')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "unstatisticsqlsbadevlinkedservice",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_table": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "task",
+					"table": {
+						"value": "@dataset().cw_table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/unstatisticsqlsbadevlinkedservice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_csv_metadata')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "unstatisticstac",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "CrimeStat.Source.UNCrime",
+						"container": "unstatistic-sourcefiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/unstatisticstac')]"
+			]
+		}
+	]
+}
