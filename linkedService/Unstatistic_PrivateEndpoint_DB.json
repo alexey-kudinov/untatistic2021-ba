@@ -9,7 +9,7 @@
 			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDEzQTQ4MURDLUM3QzEtNDI0Ni1BMTdGLTc2MEE5NTE4RDBDQV8xZjFhMTI0MC04NjJhLTQ2ZjktYTg4Ny1mMzhhZTRhODI4M2EiDQp9"
 		},
 		"connectVia": {
-			"referenceName": "AutoResolveIntegrationRuntime",
+			"referenceName": "unstatistic-runtime-aak",
 			"type": "IntegrationRuntimeReference"
 		}
 	}
